@@ -1,0 +1,91 @@
+{% extends "base.html" %}
+{% block content %}
+<h2 class="mb-4 fw-bold">Campus Residents</h2>
+
+<!-- Search -->
+<div class="input-group mb-4">
+  <span class="input-group-text">🔍</span>
+  <input type="text" class="form-control" id="searchInput" placeholder="Search by name or vehicle number...">
+</div>
+
+<!-- Table -->
+<div class="card shadow-sm">
+  <div class="card-body table-responsive">
+    <table class="table table-hover align-middle" id="residentTable">
+      <thead>
+        <tr>
+          <th>Vehicle Number</th>
+          <th>Owner</th>
+          <th>Phone</th>
+          <th>Campus ID</th>
+          <th>Email</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for resident in residents %}
+        <tr>
+          <td>{{ resident.VehicleNumber }}</td>
+          <td>{{ resident.OwnerName }}</td>
+          <td>{{ resident.OwnerPhone }}</td>
+          <td>{{ resident.OwnerCampusID }}</td>
+          <td>{{ resident.OwnerEmail }}</td>
+          <td>
+            <a href="/delete_resident/{{ resident.VehicleNumber }}" class="btn btn-sm btn-danger">Delete</a>
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<!-- Add Resident Button -->
+<button class="btn btn-success mt-4" data-bs-toggle="modal" data-bs-target="#addModal">+ Add New Resident</button>
+
+<!-- Modal -->
+<div class="modal fade" id="addModal" tabindex="-1">
+  <div class="modal-dialog modal-lg modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header bg-primary text-white">
+        <h5 class="modal-title">Add Resident</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <form method="POST" action="/add_resident">
+        <div class="modal-body row g-3">
+          <div class="col-md-6">
+            <input name="VehicleNumber" type="text" class="form-control" placeholder="Vehicle Number" required>
+          </div>
+          <div class="col-md-6">
+            <input name="OwnerName" type="text" class="form-control" placeholder="Owner Name" required>
+          </div>
+          <div class="col-md-6">
+            <input name="OwnerPhone" type="text" class="form-control" placeholder="Phone Number" required>
+          </div>
+          <div class="col-md-6">
+            <input name="OwnerCampusID" type="text" class="form-control" placeholder="Campus ID" required>
+          </div>
+          <div class="col-12">
+            <input name="OwnerEmail" type="email" class="form-control" placeholder="Email" required>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button class="btn btn-primary" type="submit">Add Resident</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<!-- Live Search Script -->
+<script>
+document.getElementById('searchInput').addEventListener('keyup', function() {
+  let filter = this.value.toLowerCase();
+  let rows = document.querySelectorAll('#residentTable tbody tr');
+  rows.forEach(row => {
+    let match = Array.from(row.children).some(cell => cell.textContent.toLowerCase().includes(filter));
+    row.style.display = match ? '' : 'none';
+  });
+});
+</script>
+{% endblock %}

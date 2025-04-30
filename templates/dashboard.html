@@ -1,0 +1,200 @@
+{% extends "base.html" %}
+{% block content %}
+<h2 class="mb-4 fw-bold">Campus Traffic Dashboard</h2>
+
+<!-- Summary Cards -->
+<div class="row mb-4">
+  <div class="col-md-3">
+    <div class="card text-white bg-primary shadow-sm">
+      <div class="card-body">
+        <h5 class="card-title">Total Vehicles</h5>
+        <p class="card-text fs-2" id="totalVehicles">0</p>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-3">
+    <div class="card text-white bg-success shadow-sm">
+      <div class="card-body">
+        <h5 class="card-title">Resident Vehicles</h5>
+        <p class="card-text fs-2" id="residentVehicles">0</p>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-3">
+    <div class="card text-white bg-danger shadow-sm">
+      <div class="card-body">
+        <h5 class="card-title">Violations</h5>
+        <p class="card-text fs-2" id="violationCount">0</p>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-3">
+    <div class="card text-white bg-warning shadow-sm">
+      <div class="card-body">
+        <h5 class="card-title">Visitors</h5>
+        <p class="card-text fs-2" id="visitorCount">0</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Graphs Section -->
+<div class="row">
+  <div class="col-md-6 mb-4">
+    <div class="card shadow-sm">
+      <div class="card-body">
+        <h6 class="card-title">Event Distribution</h6>
+        <canvas id="eventChart"></canvas>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-md-6 mb-4">
+    <div class="card shadow-sm">
+      <div class="card-body">
+        <h6 class="card-title">Violations by Type</h6>
+        <canvas id="violationTypeChart"></canvas>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-md-6 mb-4">
+    <div class="card shadow-sm">
+      <div class="card-body">
+        <h6 class="card-title">Event Trend Over Time</h6>
+        <canvas id="trendChart"></canvas>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-md-6 mb-4">
+    <div class="card shadow-sm">
+      <div class="card-body">
+        <h6 class="card-title">Resident vs Visitor Ratio</h6>
+        <canvas id="residentVisitorChart"></canvas>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-12 mb-4">
+    <div class="card shadow-sm">
+      <div class="card-body">
+        <h6 class="card-title">Entries vs Exits Per Hour</h6>
+        <canvas id="stackedBarChart"></canvas>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<script>
+// Dummy Data (replace with AJAX later)
+const data = {
+  totalVehicles: 499,
+  residentVehicles: 486,
+  violations: 5,
+  visitors: 1,
+  eventDistribution: [300, 150, 25, 10, 10, 4],
+  violationTypes: [2, 1, 1, 1, 1],
+  entriesPerHour: [5, 10, 20, 15, 8, 12, 6, 14],
+  exitsPerHour: [2, 5, 18, 10, 6, 9, 4, 10]
+};
+
+// Update summary cards
+function updateSummary() {
+  document.getElementById('totalVehicles').innerText = data.totalVehicles;
+  document.getElementById('residentVehicles').innerText = data.residentVehicles;
+  document.getElementById('violationCount').innerText = data.violations;
+  document.getElementById('visitorCount').innerText = data.visitors;
+}
+
+updateSummary();
+
+// Event Pie Chart
+new Chart(document.getElementById('eventChart'), {
+  type: 'pie',
+  data: {
+    labels: ['Entry', 'Exit', 'Traffic Violation', 'Parking Violation', 'Unauthorized', 'After Hours'],
+    datasets: [{
+      label: 'Events',
+      data: data.eventDistribution,
+      backgroundColor: ['#0d6efd', '#198754', '#dc3545', '#ffc107', '#6c757d', '#6610f2']
+    }]
+  }
+});
+
+// Violation Bar Chart
+new Chart(document.getElementById('violationTypeChart'), {
+  type: 'bar',
+  data: {
+    labels: ['Speeding', 'No Parking', 'Unauthorized Access', 'Wrong Way', 'After Hours'],
+    datasets: [{
+      label: 'Violations',
+      data: data.violationTypes,
+      backgroundColor: '#dc3545'
+    }]
+  },
+  options: {
+    scales: { y: { beginAtZero: true } }
+  }
+});
+
+// Event Trend Line Chart
+new Chart(document.getElementById('trendChart'), {
+  type: 'line',
+  data: {
+    labels: ['6 AM', '8 AM', '10 AM', '12 PM', '2 PM', '4 PM', '6 PM', '8 PM'],
+    datasets: [{
+      label: 'Entries',
+      data: data.entriesPerHour,
+      borderColor: '#0d6efd',
+      fill: false
+    }, {
+      label: 'Exits',
+      data: data.exitsPerHour,
+      borderColor: '#198754',
+      fill: false
+    }]
+  },
+  options: { scales: { y: { beginAtZero: true } } }
+});
+
+// Resident vs Visitor Doughnut Chart
+new Chart(document.getElementById('residentVisitorChart'), {
+  type: 'doughnut',
+  data: {
+    labels: ['Residents', 'Visitors'],
+    datasets: [{
+      label: 'Users',
+      data: [data.residentVehicles, data.visitors],
+      backgroundColor: ['#198754', '#ffc107']
+    }]
+  }
+});
+
+// Stacked Bar Chart for Entries vs Exits
+new Chart(document.getElementById('stackedBarChart'), {
+  type: 'bar',
+  data: {
+    labels: ['6 AM', '8 AM', '10 AM', '12 PM', '2 PM', '4 PM', '6 PM', '8 PM'],
+    datasets: [{
+      label: 'Entries',
+      data: data.entriesPerHour,
+      backgroundColor: '#0d6efd'
+    }, {
+      label: 'Exits',
+      data: data.exitsPerHour,
+      backgroundColor: '#198754'
+    }]
+  },
+  options: {
+    scales: {
+      x: { stacked: true },
+      y: { stacked: true, beginAtZero: true }
+    }
+  }
+});
+</script>
+
+{% endblock %}

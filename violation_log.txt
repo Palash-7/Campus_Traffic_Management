@@ -1,0 +1,33 @@
+VIOLATION LOG
+================================================================================
+
+Vehicle: TN23RY9945
+  Time: 2025-04-23 09:00:00
+  Location: CAMPUS_MAIN_ROAD
+  Violation Type: SPEEDING
+  Description: SPEEDING: 10
+--------------------------------------------------------------------------------
+Vehicle: UP17WF7925
+  Time: 2025-04-23 10:00:00
+  Location: ADMIN_BLOCK
+  Violation Type: NO_PARKING_ZONE
+  Description: NO_PARKING_ZONE: 15
+--------------------------------------------------------------------------------
+Vehicle: XY12AB3456
+  Time: 2025-04-23 13:00:00
+  Location: RESTRICTED_AREA
+  Violation Type: UNAUTHORIZED_ACCESS
+  Description: 10
+--------------------------------------------------------------------------------
+Vehicle: GJ03LZ2546
+  Time: 2025-04-23 14:00:00
+  Location: LIBRARY_ROAD
+  Violation Type: WRONG_WAY
+  Description: WRONG_WAY: 30
+--------------------------------------------------------------------------------
+Vehicle: MH26DO8952
+  Time: 2025-04-23 19:00:00
+  Location: Campus Entry
+  Violation Type: AFTER_HOURS_ENTRY
+  Description: 00
+--------------------------------------------------------------------------------

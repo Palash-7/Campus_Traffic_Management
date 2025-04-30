@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+{% block content %}
+<h2 class="mb-4 fw-bold">System Reports</h2>
+
+<div class="card shadow-sm">
+  <div class="card-body">
+    <h6 class="card-title">Analytics Output</h6>
+    <pre>{{ report }}</pre>
+  </div>
+</div>
+{% endblock %}
